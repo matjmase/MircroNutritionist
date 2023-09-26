@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:MicroNutritionist.Common.Converters"
+             xmlns:viewModels="clr-namespace:MicroNutritionist.ViewModels.Dashboard"
+             xmlns:models="clr-namespace:MicroNutritionist.ViewModels.Dashboard.ViewModels"
+             x:Class="MicroNutritionist.Views.Dashboard.DashboardPage"
+             x:DataType="viewModels:DashboardPageViewModel"
+             Title="DashboardPage">
+    <ContentPage.Resources>
+        <converters:ProportionToColorConverter x:Key="propToColorConvert"/>
+        <x:Array x:Key="colorArray" Type="{x:Type Color}">
+            <Color>Purple</Color>
+            <Color>Orange</Color>
+        </x:Array>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Picker Grid.Row="0" ItemsSource="{Binding TimeFrames}" SelectedItem="{Binding SelectedTimeframe}">
+            <Picker.ItemDisplayBinding>
+                <Binding Path="Description"/>
+            </Picker.ItemDisplayBinding>
+        </Picker>
+        <Picker Grid.Row="1" ItemsSource="{Binding TotalProfiles}" SelectedItem="{Binding SelectedProfile}"/>
+
+        <ScrollView Grid.Row="2">
+            <VerticalStackLayout>
+                <CollectionView  ItemsSource="{Binding NutritionAmounts}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ProgressAmountViewModel">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" HorizontalOptions="Center" Text="{Binding Name}"/>
+                                <ProgressBar Grid.Row="1" ScaleY="5" Progress="{Binding Progress}" ProgressColor="{Binding Progress, Converter={StaticResource propToColorConvert}, ConverterParameter={StaticResource colorArray}}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <CollectionView  ItemsSource="{Binding ExtraNutritionAmounts}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ProgressAmountViewModel">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" HorizontalOptions="Center" Text="{Binding Name}" />
+                                <ProgressBar Grid.Row="1" ScaleY="5" Progress="{Binding Progress}" ProgressColor="Orange"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Button
+                Grid.Row="3"
+                Text="Consume Event"
+                SemanticProperties.Hint="Proceeds to event"
+                HorizontalOptions="FillAndExpand" 
+                Command="{Binding ProceedToEventCommand}"/>
+        <Button
+                Grid.Row="4"
+                Text="Settings"
+                SemanticProperties.Hint="Proceeds to settings"
+                HorizontalOptions="FillAndExpand" 
+                Command="{Binding ProceedToSettingsCommand}"/>
+    </Grid>
+</ContentPage>

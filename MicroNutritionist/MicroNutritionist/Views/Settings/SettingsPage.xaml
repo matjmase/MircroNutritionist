@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MicroNutritionist.Views.Settings.SettingsPage"
+             xmlns:viewModels="clr-namespace:MicroNutritionist.ViewModels.Settings"
+             x:DataType="viewModels:SettingsPageViewModel"
+             Title="SettingsPage">
+    <ScrollView>
+        <VerticalStackLayout
+        Spacing="25"
+        Padding="30,0"
+        VerticalOptions="Center">
+
+            <Button
+            Text="Event"
+            SemanticProperties.Hint="Proceeds to event"
+            HorizontalOptions="Center" 
+            Command="{Binding ProceedToEventCommand}"/>
+            <Button
+            Text="Profile"
+            SemanticProperties.Hint="Proceeds to profile"
+            HorizontalOptions="Center" 
+            Command="{Binding ProceedToProfileCommand}"/>
+            <Button
+            Text="Product"
+            SemanticProperties.Hint="Proceeds to product"
+            HorizontalOptions="Center" 
+            Command="{Binding ProceedToProductCommand}"/>
+            <Button
+            Text="Nutrition"
+            SemanticProperties.Hint="Proceeds to nutrition"
+            HorizontalOptions="Center" 
+            Command="{Binding ProceedToNutritionCommand}"/>
+            <Button
+            Text="Clear Database"
+            SemanticProperties.Hint="Proceeds to analytics"
+            HorizontalOptions="Center" 
+            Command="{Binding ClearDatabaseCommand}"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

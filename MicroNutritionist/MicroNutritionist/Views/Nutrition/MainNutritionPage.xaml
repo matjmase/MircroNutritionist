@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MicroNutritionist.Views.Nutrition.MainNutritionPage"
+             xmlns:viewModels="clr-namespace:MicroNutritionist.ViewModels.Nutrition"
+             x:DataType="viewModels:MainNutritionPageViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="MainNutritionPage">
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior EventName="Loaded" Command="{Binding LoadedCommand}"/>
+        <toolkit:EventToCommandBehavior EventName="Unloaded" Command="{Binding UnLoadedCommand}"/>
+    </ContentPage.Behaviors>
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+            <Button
+                Text="Add"
+                SemanticProperties.Hint="Add to product"
+                HorizontalOptions="Center" 
+                Command="{Binding AddNewNutritionCommand}"/>
+            <Button
+                Text="Edit"
+                SemanticProperties.Hint="Edit to product"
+                HorizontalOptions="Center" 
+                Command="{Binding EditNutritionCommand}"/>
+            <Button
+                Text="Delete"
+                SemanticProperties.Hint="Delete to product"
+                HorizontalOptions="Center" 
+                Command="{Binding DeleteNutritionCommand}"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
