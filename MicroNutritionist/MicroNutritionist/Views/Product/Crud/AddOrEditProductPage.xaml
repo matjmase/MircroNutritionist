@@ -4,7 +4,7 @@
              x:Class="MicroNutritionist.Views.Product.Crud.AddOrEditProductPage"
              xmlns:models="clr-namespace:MicroNutritionist.ViewModels.Nutrition.Models"
              xmlns:behaviors="clr-namespace:MicroNutritionist.Common.Behaviors"
-             xmlns:components="clr-namespace:MicroNutritionist.Views.Product.Crud.Components"
+             xmlns:components="clr-namespace:MicroNutritionist.Views.SubViews.Crud"
              xmlns:viewModels="clr-namespace:MicroNutritionist.ViewModels.Product.Crud"
              x:DataType="viewModels:AddOrEditProductPageViewModel"
              Title="AddOrEditProductPage">
@@ -49,7 +49,7 @@
                     <CollectionView Grid.Row="0" ItemsSource="{Binding NewNutrients}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:ProductNutritionAmountViewModel">
-                                <components:ProductNutritionAmountRowView NutritionVM="{Binding .}" 
+                                <components:NutritionAmountRowView MainObject="{Binding .}" MainName="{Binding Name}" MainInteger="{Binding AmountMg}"
                                    EditItem="{Binding Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPage}}, Path=BindingContext.NutrientDetailsCommand}"
                                    RemoveItem="{Binding Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPage}}, Path=BindingContext.NutrientNewlRemoveCommand}"/>
                             </DataTemplate>
@@ -59,7 +59,7 @@
                     <CollectionView Grid.Row="1" ItemsSource="{Binding OriginalNutrients}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:ProductNutritionAmountViewModel">
-                                <components:ProductNutritionAmountRowView NutritionVM="{Binding .}" 
+                                <components:NutritionAmountRowView MainObject="{Binding .}" MainName="{Binding Name}" MainInteger="{Binding AmountMg}"
                                     EditItem="{Binding Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPage}}, Path=BindingContext.NutrientDetailsCommand}"
                                     RemoveItem="{Binding Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPage}}, Path=BindingContext.NutrientOriginalRemoveCommand}"/>
                             </DataTemplate>
