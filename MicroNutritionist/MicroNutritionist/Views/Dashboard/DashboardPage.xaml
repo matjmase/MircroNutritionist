@@ -8,6 +8,7 @@
              x:DataType="viewModels:DashboardPageViewModel"
              Title="DashboardPage">
     <ContentPage.Resources>
+        <converters:NullToFalseConverter x:Key="nullToFalseConvert"/>
         <converters:ProportionToColorConverter x:Key="propToColorConvert"/>
         <x:Array x:Key="colorArray" Type="{x:Type Color}">
             <Color>Purple</Color>
@@ -16,6 +17,7 @@
     </ContentPage.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -30,7 +32,16 @@
         </Picker>
         <Picker Grid.Row="1" ItemsSource="{Binding TotalProfiles}" SelectedItem="{Binding SelectedProfile}"/>
 
-        <ScrollView Grid.Row="2">
+        <Grid Grid.Row="2" IsVisible="{Binding CalorieAmounts, Converter={StaticResource nullToFalseConvert}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" HorizontalOptions="Center" Text="{Binding CalorieAmounts.Name}"/>
+            <ProgressBar Grid.Row="1" ScaleY="5" Progress="{Binding CalorieAmounts.Progress}" ProgressColor="{Binding CalorieAmounts.Progress, Converter={StaticResource propToColorConvert}, ConverterParameter={StaticResource colorArray}}"/>
+        </Grid>
+
+        <ScrollView Grid.Row="3">
             <VerticalStackLayout>
                 <CollectionView  ItemsSource="{Binding NutritionAmounts}">
                     <CollectionView.ItemTemplate>
@@ -64,13 +75,13 @@
         </ScrollView>
 
         <Button
-                Grid.Row="3"
+                Grid.Row="4"
                 Text="Consume Event"
                 SemanticProperties.Hint="Proceeds to event"
                 HorizontalOptions="FillAndExpand" 
                 Command="{Binding ProceedToEventCommand}"/>
         <Button
-                Grid.Row="4"
+                Grid.Row="5"
                 Text="Settings"
                 SemanticProperties.Hint="Proceeds to settings"
                 HorizontalOptions="FillAndExpand" 

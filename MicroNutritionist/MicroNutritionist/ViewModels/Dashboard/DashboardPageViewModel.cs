@@ -23,6 +23,8 @@ namespace MicroNutritionist.ViewModels.Dashboard
         private ObservableCollection<MicroNutritionist.Common.Database.Models.Profile> _totalProfiles = new ObservableCollection<Common.Database.Models.Profile>();
 
         [ObservableProperty]
+        private ProgressAmountViewModel _calorieAmounts;
+        [ObservableProperty]
         private ObservableCollection<ProgressAmountViewModel> _nutritionAmounts = new ObservableCollection<ProgressAmountViewModel>();
         [ObservableProperty]
         private ObservableCollection<ProgressAmountViewModel> _extraNutritionAmounts = new ObservableCollection<ProgressAmountViewModel>();
@@ -73,11 +75,13 @@ namespace MicroNutritionist.ViewModels.Dashboard
 
         private void InitializeNutritionAmounts()
         {
+            CalorieAmounts = null;
             NutritionAmounts.Clear();
             ExtraNutritionAmounts.Clear();
             if (SelectedProfile == null || SelectedTimeframe == null)
                 return;
 
+            // Get Data from DB ready
             var profileAmounts = MauiProgram.Database.GetProfileNutritionAmountByProfile(SelectedProfile.Id).WaitForResult();
             List<ConsumptionEvent> consumptionEvents;
 
@@ -92,15 +96,26 @@ namespace MicroNutritionist.ViewModels.Dashboard
                 default:
                     throw new NotImplementedException();
             }
-                
+
             var productsIds = consumptionEvents.Select(e => e.ProductId).ToHashSet();
             var productAmounts = MauiProgram.Database.GetAllProductNutritionAmount().WaitForResult().Where(e => productsIds.Contains(e.ProductId));
+            var products = MauiProgram.Database.GetAllProducts().WaitForResult().ToDictionary(e => e.Id);
 
             var nutritionDict = MauiProgram.Database.GetAllNutrition().WaitForResult().ToDictionary(e => e.Id);
 
             var profileAmtDict = profileAmounts.ToDictionary(e => e.NutritionId);
             var consumptionDict = consumptionEvents.ToDictionary(e => e.ProductId);
 
+            // Get Calories of all products scaled by portion
+            var calorieCounter = 0.0;
+            foreach (var consumeEvent in consumptionEvents)
+            {
+                calorieCounter += products[consumeEvent.ProductId].Calories * consumeEvent.Proportion;
+            }
+
+            CalorieAmounts = FormateProgressAmountNameForProduct("Calories", calorieCounter, SelectedProfile.Calories);
+
+            // Sum them together by Nutrients
             var total = new Dictionary<int, double>();
             foreach (var prodAmount in productAmounts)
             {
@@ -112,6 +127,7 @@ namespace MicroNutritionist.ViewModels.Dashboard
                 total[prodAmount.NutritionId] += consumptionDict[prodAmount.ProductId].Proportion * prodAmount.AmountMg;
             }
 
+            // Essential Nutrients
             foreach (var profileAmt in profileAmounts)
             {
                 var amount = 0.0;
@@ -121,9 +137,10 @@ namespace MicroNutritionist.ViewModels.Dashboard
                     amount = total[profileAmt.NutritionId];
                 }
 
-                NutritionAmounts.Add(FormateProgressAmountName(nutritionDict[profileAmt.NutritionId].Name, amount, profileAmt.AmountMg));
+                NutritionAmounts.Add(FormateProgressAmountNameForNutrition(nutritionDict[profileAmt.NutritionId].Name, amount, profileAmt.AmountMg));
             }
 
+            // Extra Nutrients
             var already = profileAmounts.Select(e => e.NutritionId).ToHashSet();
 
             foreach (var item in total)
@@ -131,11 +148,27 @@ namespace MicroNutritionist.ViewModels.Dashboard
                 if (already.Contains(item.Key))
                     continue;
 
-                ExtraNutritionAmounts.Add(FormateProgressAmountName(nutritionDict[item.Key].Name, item.Value, 0));
+                ExtraNutritionAmounts.Add(FormateProgressAmountNameForNutrition(nutritionDict[item.Key].Name, item.Value, 0));
             }
+
+            // Sorts
+            NutritionAmounts = new ObservableCollection<ProgressAmountViewModel>(NutritionAmounts.OrderBy(e => e.Progress).ThenBy(e => e.Name));
+            ExtraNutritionAmounts = new ObservableCollection<ProgressAmountViewModel>(ExtraNutritionAmounts.OrderBy(e => e.Name));
         }
 
-        private ProgressAmountViewModel FormateProgressAmountName(string name, double current, double total)
+
+        private ProgressAmountViewModel FormateProgressAmountNameForProduct(string name, double current, double total)
+        {
+            if (total == 0)
+            {
+                return new ProgressAmountViewModel($"{name} - {String.Format("{0:0.}", current)} / {String.Format("{0:0.}", total)}", current, total);
+            }
+            else
+            {
+                return new ProgressAmountViewModel($"{name} - {String.Format("{0:0.}", current)} / {String.Format("{0:0.}", total)} (%{String.Format("{0:0.0}", current / total * 100)})", current, total);
+            }
+        }
+        private ProgressAmountViewModel FormateProgressAmountNameForNutrition(string name, double current, double total)
         {
             if (total == 0)
             {
