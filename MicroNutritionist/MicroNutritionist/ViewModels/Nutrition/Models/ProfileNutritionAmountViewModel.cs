@@ -22,12 +22,12 @@ namespace MicroNutritionist.ViewModels.Nutrition.Models
             }
         }
 
-        public int AmountMg
+        public double? AmountMg
         {
             get => InnerAmount.AmountMg;
             set
             {
-                InnerAmount.AmountMg = value;
+                InnerAmount.AmountMg = value == null ? 0.0 : value.Value;
                 OnPropertyChanged();
             }
         }

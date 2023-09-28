@@ -17,9 +17,9 @@
         </Grid.GestureRecognizers>
 
         <Label Grid.Column="0" Text="{Binding MainName, Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:NutritionAmountRowView}}}" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-        <Entry Grid.Column="1" Text="{Binding MainInteger, Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:NutritionAmountRowView}}}" Keyboard="Numeric" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Fill">
+        <Entry Grid.Column="1" Text="{Binding MainDouble, Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:NutritionAmountRowView}}}" Keyboard="Numeric" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Fill">
             <Entry.Behaviors>
-                <behaviors:NumericValidationBehavior/>
+                <behaviors:DoubleValidationBehavior/>
             </Entry.Behaviors>
         </Entry>
         <Label Grid.Column="2" Text="milligrams/day" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>

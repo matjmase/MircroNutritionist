@@ -15,6 +15,6 @@ namespace MicroNutritionist.Common.Database.Models
         public int ProfileId { get; set; }
         [Indexed(Unique = false)]
         public int NutritionId { get; set; }
-        public int AmountMg { get; set; }
+        public double AmountMg { get; set; }
     }
 }

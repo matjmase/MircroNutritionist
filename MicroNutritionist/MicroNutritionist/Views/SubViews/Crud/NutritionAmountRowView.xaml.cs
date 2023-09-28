@@ -24,13 +24,13 @@ public partial class NutritionAmountRowView : ContentView
     }
 
 
-    public static readonly BindableProperty MainIntegerProperty =
-  BindableProperty.Create(nameof(MainInteger), typeof(int), typeof(NutritionAmountRowView));
+    public static readonly BindableProperty MainDoubleProperty =
+  BindableProperty.Create(nameof(MainDouble), typeof(double?), typeof(NutritionAmountRowView));
 
-    public int? MainInteger
+    public double? MainDouble
     {
-        get => GetValue(MainIntegerProperty) as int?;
-        set => SetValue(MainIntegerProperty, value);
+        get => GetValue(MainDoubleProperty) as double?;
+        set => SetValue(MainDoubleProperty, value);
     }
 
     public static readonly BindableProperty RemoveItemProperty =
