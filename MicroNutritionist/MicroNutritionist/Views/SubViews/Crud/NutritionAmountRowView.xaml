@@ -17,7 +17,7 @@
         </Grid.GestureRecognizers>
 
         <Label Grid.Column="0" Text="{Binding MainName, Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:NutritionAmountRowView}}}" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-        <Entry Grid.Column="1" Text="{Binding MainInteger, Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:NutritionAmountRowView}}}" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Fill">
+        <Entry Grid.Column="1" Text="{Binding MainInteger, Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:NutritionAmountRowView}}}" Keyboard="Numeric" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Fill">
             <Entry.Behaviors>
                 <behaviors:NumericValidationBehavior/>
             </Entry.Behaviors>

@@ -24,7 +24,7 @@
         <Button Grid.Row="0"
             Text="Add Product"
             SemanticProperties.Hint="Add to product"
-            HorizontalOptions="Center" 
+            HorizontalOptions="FillAndExpand" 
             Command="{Binding SelectProductCommand}"/>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
