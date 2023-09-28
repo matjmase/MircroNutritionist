@@ -32,17 +32,16 @@
         </Picker>
         <Picker Grid.Row="1" ItemsSource="{Binding TotalProfiles}" SelectedItem="{Binding SelectedProfile}"/>
 
-        <Grid Grid.Row="2" IsVisible="{Binding CalorieAmounts, Converter={StaticResource nullToFalseConvert}}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0" HorizontalOptions="Center" Text="{Binding CalorieAmounts.Name}"/>
-            <ProgressBar Grid.Row="1" ScaleY="5" Progress="{Binding CalorieAmounts.Progress}" ProgressColor="{Binding CalorieAmounts.Progress, Converter={StaticResource propToColorConvert}, ConverterParameter={StaticResource colorArray}}"/>
-        </Grid>
-
         <ScrollView Grid.Row="3">
             <VerticalStackLayout>
+                <Grid Grid.Row="2" IsVisible="{Binding CalorieAmounts, Converter={StaticResource nullToFalseConvert}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" HorizontalOptions="Center" Text="{Binding CalorieAmounts.Name}"/>
+                    <ProgressBar Grid.Row="1" ScaleY="5" Progress="{Binding CalorieAmounts.Progress}" ProgressColor="{Binding CalorieAmounts.Progress, Converter={StaticResource propToColorConvert}, ConverterParameter={StaticResource colorArray}}"/>
+                </Grid>
                 <CollectionView  ItemsSource="{Binding NutritionAmounts}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:ProgressAmountViewModel">

@@ -8,67 +8,65 @@
              xmlns:components="clr-namespace:MicroNutritionist.Views.SubViews.Crud"
              x:DataType="viewModels:AddOrEditProfilePageViewModel"
              Title="AddOrEditProfilePage">
-    <VerticalStackLayout>
-        <Grid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Text="Profile Name: " HorizontalOptions="Start" VerticalOptions="Center"/>
+            <Entry Grid.Row="0" Grid.Column="1"  HorizontalOptions="FillAndExpand" Text="{Binding MainProfile.Name}"/>
+
+            <Label Grid.Row="1" Grid.Column="0" Text="Description: " HorizontalOptions="Start" VerticalOptions="Center"/>
+            <Entry Grid.Row="1" Grid.Column="1" HorizontalOptions="FillAndExpand" Text="{Binding MainProfile.Description}" />
+
+            <Label Grid.Row="2" Grid.Column="0" Text="Calories: " HorizontalOptions="Start" VerticalOptions="Center"/>
+            <Entry Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" Text="{Binding MainProfile.Calories}" Keyboard="Numeric" >
+                <Entry.Behaviors>
+                    <behaviors:NumericValidationBehavior/>
+                </Entry.Behaviors>
+            </Entry>
+        </Grid>
+        <ScrollView Orientation="Vertical" Grid.Row="1">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Text="Profile Name: " HorizontalOptions="Start" VerticalOptions="Center"/>
-                <Entry Grid.Row="0" Grid.Column="1"  HorizontalOptions="FillAndExpand" Text="{Binding MainProfile.Name}"/>
 
-                <Label Grid.Row="1" Grid.Column="0" Text="Description: " HorizontalOptions="Start" VerticalOptions="Center"/>
-                <Entry Grid.Row="1" Grid.Column="1" HorizontalOptions="FillAndExpand" Text="{Binding MainProfile.Description}" />
-
-                <Label Grid.Row="2" Grid.Column="0" Text="Calories: " HorizontalOptions="Start" VerticalOptions="Center"/>
-                <Entry Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" Text="{Binding MainProfile.Calories}" Keyboard="Numeric" >
-                    <Entry.Behaviors>
-                        <behaviors:NumericValidationBehavior/>
-                    </Entry.Behaviors>
-                </Entry>
-            </Grid>
-            <ScrollView Grid.Row="1">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-
-                    <CollectionView Grid.Row="0" ItemsSource="{Binding NewNutrients}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:ProfileNutritionAmountViewModel">
-                                <components:NutritionAmountRowView MainObject="{Binding .}" MainName="{Binding Name}" MainDouble="{Binding AmountMg, Mode=TwoWay}"
+                <CollectionView Grid.Row="0" ItemsSource="{Binding NewNutrients}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ProfileNutritionAmountViewModel">
+                            <components:NutritionAmountRowView MainObject="{Binding .}" MainName="{Binding Name}" MainDouble="{Binding AmountMg, Mode=TwoWay}"
                                    EditItem="{Binding Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPage}}, Path=BindingContext.NutrientDetailsCommand}"
                                    RemoveItem="{Binding Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPage}}, Path=BindingContext.NutrientNewlRemoveCommand}"/>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-                    <CollectionView Grid.Row="1" ItemsSource="{Binding OriginalNutrients}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:ProfileNutritionAmountViewModel">
-                                <components:NutritionAmountRowView MainObject="{Binding .}" MainName="{Binding Name}" MainDouble="{Binding AmountMg, Mode=TwoWay}"
+                <CollectionView Grid.Row="1" ItemsSource="{Binding OriginalNutrients}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ProfileNutritionAmountViewModel">
+                            <components:NutritionAmountRowView MainObject="{Binding .}" MainName="{Binding Name}" MainDouble="{Binding AmountMg, Mode=TwoWay}"
                                     EditItem="{Binding Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPage}}, Path=BindingContext.NutrientDetailsCommand}"
                                     RemoveItem="{Binding Source={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentPage}}, Path=BindingContext.NutrientOriginalRemoveCommand}"/>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </Grid>
-            </ScrollView>
-            <Button Grid.Row="2" Text="Add New Nutrition" HorizontalOptions="FillAndExpand" Command="{Binding AddNutrientCommand}"/>
-            <Button Grid.Row="3" Text="Save Changes" HorizontalOptions="FillAndExpand" Command="{Binding SaveChangesCommand}"/>
-        </Grid>
-    </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </ScrollView>
+        <Button Grid.Row="2" Text="Add New Nutrition" HorizontalOptions="FillAndExpand" Command="{Binding AddNutrientCommand}"/>
+        <Button Grid.Row="3" Text="Save Changes" HorizontalOptions="FillAndExpand" Command="{Binding SaveChangesCommand}"/>
+    </Grid>
 </ContentPage>
